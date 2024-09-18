@@ -6,8 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -31,7 +34,9 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
         findViewById<Button>(R.id.btn_about).setOnClickListener {
 
             val intentToAbout = Intent(this,AboutActivity::class.java)
-            startActivity(intentToAbout)
+
+            val option = ActivityOptionsCompat.makeSceneTransitionAnimation(this)
+            startActivity(intentToAbout,option.toBundle())
         }
     }
 
@@ -49,8 +54,24 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
         }
 
     override fun onItemClicked(view: View, book: Book) {
-        val intentDetail = Intent(this,DetailActivity::class.java)
-        intentDetail.putExtra("extra_detail",book)
-        startActivity(intentDetail, ActivityOptionsCompat.makeSceneTransitionAnimation(view.context as Activity).toBundle())
+        // Dapatkan elemen UI dari view yang diklik
+        val imgItemPhoto = view.findViewById<ImageView>(R.id.img_item_photo)
+        val tvItemName = view.findViewById<TextView>(R.id.tv_item_name)
+        val tvItemDescription = view.findViewById<TextView>(R.id.tv_item_description)
+
+        // Buat Intent untuk berpindah ke DetailActivity
+        val intentDetail = Intent(view.context, DetailActivity::class.java)
+        intentDetail.putExtra("extra_detail", book)
+
+        // Terapkan animasi transisi dengan shared elements
+        val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            view.context as Activity,
+            Pair(imgItemPhoto, "profile"),
+            Pair(tvItemName, "name"),
+            Pair(tvItemDescription, "description")
+        )
+
+     startActivity(intentDetail,optionsCompat.toBundle())
     }
+
 }
