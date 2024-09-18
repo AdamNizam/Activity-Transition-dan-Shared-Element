@@ -25,6 +25,7 @@ class ListBookAdapter(private val listBook: ArrayList<Book>) : RecyclerView.Adap
         holder.tvDescription.text = description
         holder.itemView.setOnClickListener {
             clickListener?.onItemClicked(it, listBook[position])
+
         }
     }
 

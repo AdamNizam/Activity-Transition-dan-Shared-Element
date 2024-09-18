@@ -1,11 +1,13 @@
 package com.example.myrecyclerview
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -47,9 +49,8 @@ class MainActivity : AppCompatActivity(), RecyclerViewClickListener {
         }
 
     override fun onItemClicked(view: View, book: Book) {
-
-        val intenDetail = Intent(this,DetailActivity::class.java)
-        intenDetail.putExtra("extra_detail",book)
-        startActivity(intenDetail)
+        val intentDetail = Intent(this,DetailActivity::class.java)
+        intentDetail.putExtra("extra_detail",book)
+        startActivity(intentDetail, ActivityOptionsCompat.makeSceneTransitionAnimation(view.context as Activity).toBundle())
     }
 }
